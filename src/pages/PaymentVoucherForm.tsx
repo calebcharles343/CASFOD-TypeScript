@@ -1,14 +1,14 @@
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ExcelJS from "exceljs";
-import { compareAsc, format } from "date-fns";
+import { format } from "date-fns";
 
 import Form from "../ui/Form";
 import FormRow from "../ui/FormRow";
 import Input from "../ui/Input";
 import Row from "../ui/Row";
 import Button from "../ui/Button";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 import Select from "../ui/Select";
 import Textarea from "../ui/TextArea";
@@ -44,36 +44,36 @@ function PaymentVoucherForm() {
   /////////////////////////////////////////
   //HANDLERS
   /////////////////////////////////////////
-  function handleGrossAmount(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleGrossAmount(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setGrossAmount(Number(e.target.value));
   }
 
-  function handleVat(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleVat(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
 
     setVat(Number(e.target.value));
   }
 
-  function handleWht(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleWht(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
 
     setWht(Number(e.target.value));
   }
 
-  function handleDevLevy(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleDevLevy(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
 
     setDevLevy(Number(e.target.value));
   }
 
-  function handleOtherDeductions(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleOtherDeductions(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
 
     setDeductions(Number(e.target.value));
   }
 
-  function handleChartOfAcc(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChartOfAcc(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
 
     const selected = e.target.value;
@@ -102,7 +102,9 @@ function PaymentVoucherForm() {
   /////////////////////////////////////////////
 
   async function formSubmit(data: Partial<FormValues>) {
-    console.log(data);
+    data.chartOfAccount = menuOption;
+    data.chartOfAccountCode = chartCode;
+    data.netAmount = netAmount?.toString();
 
     try {
       if (data) {
@@ -137,16 +139,17 @@ function PaymentVoucherForm() {
         worksheet.mergeCells("A17:C17"); //# deptCodeCell
         worksheet.mergeCells("D17:G17"); //# deptCodeValue
         worksheet.mergeCells("B19:R19"); //# payCellValue
-        worksheet.mergeCells("B21:R21"); //# beingValue
-        worksheet.mergeCells("A22:R22"); //# beingValue
+        worksheet.mergeCells("B21:V21"); //# beingValue
+        worksheet.mergeCells("A22:V22"); //# beingValue
         worksheet.mergeCells("A24:C24"); //# amountInWordsCell
-        worksheet.mergeCells("D24:R24"); //# amountInWordsValue
-        worksheet.mergeCells("A25:R25"); //# amountInWordsValue
+        worksheet.mergeCells("D24:V24"); //# amountInWordsValue
+        worksheet.mergeCells("A25:V25"); //# amountInWordsValue
         //////////////////////////////////////////
         //TABLE CELLS
         //////////////////////////////////////////
-        //TABLE HEADER CELLS
+        //TABLE1 HEADER CELLS
         worksheet.mergeCells("A28:C28"); //# debitPostingCell
+
         worksheet.mergeCells("A29:C29"); //# accsDescriptionCell
         worksheet.mergeCells("D29:G29"); //# grantCodeCell
         worksheet.mergeCells("H29:J29"); //# grossAmountCell
@@ -156,7 +159,7 @@ function PaymentVoucherForm() {
         worksheet.mergeCells("Q29:S29"); //# otherDeductionsCell
         worksheet.mergeCells("T29:V29"); //# netAmountCell
 
-        //TABLE ROWS CELLS
+        //TABLE1 ROWS CELLS
         worksheet.mergeCells("A30:C30"); //# accsDescriptionValue
         worksheet.mergeCells("D30:G30"); //# grantCodeValue
         worksheet.mergeCells("H30:J30"); //# grossAmountValue
@@ -165,6 +168,46 @@ function PaymentVoucherForm() {
         worksheet.mergeCells("O30:P30"); //# devLevyValue
         worksheet.mergeCells("Q30:S30"); //# otherDeductionsValue
         worksheet.mergeCells("T30:V30"); //# netAmountValue
+
+        ////////////////////////////////////////////////////////////////
+
+        //TABLE2 HEADER CELLS
+        worksheet.mergeCells("A32:C32"); //# accountPostingCell
+
+        worksheet.mergeCells("A33:D33"); //# cashAndLedgerCell
+        worksheet.mergeCells("E33:H33"); //# chartOfAccountCell
+        worksheet.mergeCells("I33:L33"); //# chartOfAccountCodeCell
+        worksheet.mergeCells("M33:O33"); //# proj.BudgetLineCell
+        worksheet.mergeCells("P33:S33"); //# noteCell
+        worksheet.mergeCells("T33:V33"); //# mandateReferenceCell
+
+        //TABLE2 ROWS CELLS
+        worksheet.mergeCells("A34:D34"); //# cashAndLedgerValue
+        worksheet.mergeCells("E34:H34"); //# chartOfAccountValue
+        worksheet.mergeCells("I34:L34"); //# chartOfAccountCodeValue
+        worksheet.mergeCells("M34:O34"); //# proj.BudgetLineValue
+        worksheet.mergeCells("P34:S34"); //# noteCell
+        worksheet.mergeCells("T34:V34"); //# mandateReferenceValue
+
+        /////////////////////////////////////////////////////
+        //FOOTER CELLS
+        /////////////////////////////////////////////////////
+        worksheet.mergeCells("J37:M37"); //# certifyCell
+        worksheet.mergeCells("A38:K38"); //# footerDescCell
+
+        worksheet.mergeCells("A41:F41"); //# opVoucherCell
+        worksheet.mergeCells("G41:I41"); //# opNameCell
+        worksheet.mergeCells("J41:M41"); //# opNameValue
+        worksheet.mergeCells("O41:P41"); //# opSignatureCell
+        worksheet.mergeCells("Q41:R41"); //# opSignatureValue
+        worksheet.mergeCells("U41:V41"); //# opDateValue
+
+        worksheet.mergeCells("A43:F43"); //# ocVoucherCell
+        worksheet.mergeCells("G43:I43"); //# ocNameCell
+        worksheet.mergeCells("J43:M43"); //# ocNameValue
+        worksheet.mergeCells("O43:P43"); //# ocSignatureCell
+        worksheet.mergeCells("Q43:R43"); //# ocSignatureValue
+        worksheet.mergeCells("U43:V43"); //# ocDateValue
 
         // Optionally, set some value or style to the merged cell
         const valueCell = worksheet.getCell("K1");
@@ -239,11 +282,11 @@ function PaymentVoucherForm() {
         amountInWordsValue.value = data.amountInWords;
 
         ///////////////////////////////////////////////////
-        //TABLE DATA
+        //TABLE1 DATA
         //////////////////////////////////////////////////
         const debitPostingCell = worksheet.getCell("A28");
         debitPostingCell.value = "Debit Posting";
-        debitPostingCell.font = { bold: true, size: 14 };
+        debitPostingCell.font = { bold: true, size: 16 };
 
         //////////////////////////////////////////////////
         const accsDescriptionCell = worksheet.getCell("A29");
@@ -279,6 +322,10 @@ function PaymentVoucherForm() {
         grossAmountCell.font = { bold: true, size: 14 };
 
         const grossAmountValue = worksheet.getCell("H30");
+        grossAmountValue.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
         grossAmountValue.value = data.grossAmount;
 
         //////////////////////////////////////////////////
@@ -291,6 +338,10 @@ function PaymentVoucherForm() {
         vatCell.font = { bold: true, size: 14 };
 
         const vatValue = worksheet.getCell("K30");
+        vatValue.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
         vatValue.value = (Number(data.grossAmount) / 100) * Number(data.vat);
 
         //////////////////////////////////////////////////
@@ -302,6 +353,10 @@ function PaymentVoucherForm() {
         };
         whtCell.font = { bold: true, size: 14 };
         const whtValue = worksheet.getCell("M30");
+        whtValue.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
         whtValue.value = (Number(data.grossAmount) / 100) * Number(data.wht);
 
         //////////////////////////////////////////////////
@@ -313,6 +368,10 @@ function PaymentVoucherForm() {
         };
         devLevyCell.font = { bold: true, size: 14 };
         const devLevyValue = worksheet.getCell("O30");
+        devLevyValue.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
         devLevyValue.value =
           (Number(data.grossAmount) / 100) * Number(data.devLevy);
 
@@ -325,6 +384,10 @@ function PaymentVoucherForm() {
         };
         otherDeductionsCell.font = { bold: true, size: 14 };
         const otherDeductionsValue = worksheet.getCell("Q30");
+        otherDeductionsValue.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
         otherDeductionsValue.value = data.otherDeductions;
 
         //////////////////////////////////////////////////
@@ -336,7 +399,231 @@ function PaymentVoucherForm() {
         };
         netAmountCell.font = { bold: true, size: 14 };
         const netAmountValue = worksheet.getCell("T30");
-        netAmountValue.value = data.otherDeductions;
+        netAmountValue.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
+        netAmountValue.value = data.netAmount;
+
+        ///////////////////////////////////////////////////
+        //TABLE2 DATA
+        //////////////////////////////////////////////////
+        const accountPostingCell = worksheet.getCell("A32");
+        accountPostingCell.value = "Account Posting";
+        accountPostingCell.font = { bold: true, size: 16 };
+
+        //////////////////////////////////////////////////
+        const cashAndLedgerCell = worksheet.getCell("A33");
+        cashAndLedgerCell.value = "Cashbook and Ledger Posting";
+        cashAndLedgerCell.alignment = {
+          vertical: "bottom",
+          horizontal: "center",
+        };
+        cashAndLedgerCell.font = { bold: true, size: 16 };
+
+        //////////////////////////////////////////////////
+        const chartOfAccountCell = worksheet.getCell("E33");
+        chartOfAccountCell.value = "Chart of Account";
+        chartOfAccountCell.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
+        chartOfAccountCell.font = { bold: true, size: 14 };
+        const chartOfAccountValue = worksheet.getCell("E34");
+        chartOfAccountValue.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
+        chartOfAccountValue.value = data.chartOfAccount;
+
+        //////////////////////////////////////////////////
+        const chartOfAccountCodeCell = worksheet.getCell("I33");
+        chartOfAccountCodeCell.value = "Chart of Account Code ";
+        chartOfAccountCodeCell.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
+        chartOfAccountCodeCell.font = { bold: true, size: 14 };
+
+        const chartOfAccountCodeValue = worksheet.getCell("I34");
+        chartOfAccountCodeValue.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
+        chartOfAccountCodeValue.value = data.chartOfAccountCode;
+
+        //////////////////////////////////////////////////
+        const projBudgetLineCell = worksheet.getCell("M33");
+        projBudgetLineCell.value = `Proj. Budget Line`;
+        projBudgetLineCell.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
+        projBudgetLineCell.font = { bold: true, size: 14 };
+
+        const projBudgetLineValue = worksheet.getCell("M34");
+        projBudgetLineValue.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
+        projBudgetLineValue.value = data.projBudgetLine;
+
+        //////////////////////////////////////////////////
+        const noteCell = worksheet.getCell("P33");
+        noteCell.value = `Note`;
+        noteCell.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
+        noteCell.font = { bold: true, size: 14 };
+        const noteCellValue = worksheet.getCell("P34");
+        noteCellValue.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
+        noteCellValue.value = data.note;
+
+        //////////////////////////////////////////////////
+        const mandateReferenceCell = worksheet.getCell("T33");
+        mandateReferenceCell.value = `Mandate Reference`;
+        mandateReferenceCell.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
+        mandateReferenceCell.font = { bold: true, size: 14 };
+        const mandateReferenceValue = worksheet.getCell("T34");
+        mandateReferenceValue.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
+        mandateReferenceValue.value = data.mandateReference;
+
+        /////////////////////////////////////////////////////
+        //FOOTER DATA
+        /////////////////////////////////////////////////////
+        const certifyCell = worksheet.getCell("J37");
+        certifyCell.value = "I CERTIFY THAT";
+        certifyCell.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+        };
+        certifyCell.font = { bold: true, size: 16 };
+
+        const footerDescCell = worksheet.getCell("A38");
+        footerDescCell.value =
+          "The above payment is correctas to rate, authority and standing regulations";
+        footerDescCell.font = { bold: false, size: 14 };
+
+        const opVoucherCell = worksheet.getCell("A41");
+        opVoucherCell.value = "Officer who prepared this Voucher:";
+        opVoucherCell.font = { bold: true, size: 14 };
+
+        //////////////////////////////////////////////////////
+        const opNameCell = worksheet.getCell("G41");
+        opNameCell.value = "Name(in Block Letters):";
+        opNameCell.font = { bold: true, size: 14 };
+        const opNameValue = worksheet.getCell("J41");
+        opNameValue.value = data.preparedBy;
+
+        ////////////////////////////////////////////////////
+        const opSignature = worksheet.getCell("O41");
+        opSignature.value = "signature:";
+        opSignature.alignment = {
+          vertical: "middle",
+          horizontal: "right",
+        };
+        opSignature.font = { bold: true, size: 14 };
+
+        const opDateCell = worksheet.getCell("T41");
+        opDateCell.value = "Date:";
+        opDateCell.alignment = {
+          vertical: "middle",
+          horizontal: "right",
+        };
+        opDateCell.font = { bold: true, size: 14 };
+        ////////////////////////////////////////////////////////////
+        const ocVoucherCell = worksheet.getCell("A43");
+        ocVoucherCell.value = "Officer who checked this Voucher:";
+        ocVoucherCell.font = { bold: true, size: 14 };
+
+        //////////////////////////////////////////////////////
+        const ocNameCell = worksheet.getCell("G43");
+        ocNameCell.value = "Name(in Block Letters):";
+        ocNameCell.font = { bold: true, size: 14 };
+        const ocNameValue = worksheet.getCell("J43");
+        ocNameValue.value = data.checkedBy;
+
+        ////////////////////////////////////////////////////
+        const ocSignature = worksheet.getCell("O43");
+        ocSignature.value = "signature:";
+        ocSignature.alignment = {
+          vertical: "middle",
+          horizontal: "right",
+        };
+        ocSignature.font = { bold: true, size: 14 };
+
+        const ocDateCell = worksheet.getCell("T43");
+        ocDateCell.value = "Date:";
+        ocDateCell.alignment = {
+          vertical: "middle",
+          horizontal: "right",
+        };
+        ocDateCell.font = { bold: true, size: 14 };
+
+        //////////////////////////////////////////////////////
+        //TABLE BORDER
+        /////////////////////////////////////////////////////
+        //TABLE 1 BORDER
+        worksheet.getRow(28).eachCell((cell) => {
+          cell.border = {
+            top: { style: "thin" },
+            right: { style: "thin" },
+            bottom: { style: "thin" },
+            left: { style: "thin" },
+          };
+        });
+        worksheet.getRow(29).eachCell((cell) => {
+          cell.border = {
+            top: { style: "thin" },
+            right: { style: "thin" },
+            bottom: { style: "thin" },
+            left: { style: "thin" },
+          };
+        });
+        worksheet.getRow(30).eachCell((cell) => {
+          cell.border = {
+            top: { style: "thin" },
+            right: { style: "thin" },
+            bottom: { style: "thin" },
+            left: { style: "thin" },
+          };
+        });
+
+        //TABLE 2 BORDER
+        worksheet.getRow(32).eachCell((cell) => {
+          cell.border = {
+            top: { style: "thin" },
+            right: { style: "thin" },
+            bottom: { style: "thin" },
+            left: { style: "thin" },
+          };
+        });
+        worksheet.getRow(33).eachCell((cell) => {
+          cell.border = {
+            top: { style: "thin" },
+            right: { style: "thin" },
+            bottom: { style: "thin" },
+            left: { style: "thin" },
+          };
+        });
+        worksheet.getRow(34).eachCell((cell) => {
+          cell.border = {
+            top: { style: "thin" },
+            right: { style: "thin" },
+            bottom: { style: "thin" },
+            left: { style: "thin" },
+          };
+        });
         ////////////////////////////////////////
         //ROWS AND COLUMN
         ////////////////////////////////////////
@@ -377,15 +664,15 @@ function PaymentVoucherForm() {
     }
 
     ///////////////////////////////////
-    //REMEMBER RESET STATE
+    //RESET STATE
     ///////////////////////////////////
 
-    // setGrossAmount(0);
-    // setVat(0);
-    // setWht(0);
-    // setDeductions(0);
-    // setNetAmount(0);
-    // setDevLevy(0);
+    setGrossAmount(0);
+    setVat(0);
+    setWht(0);
+    setDeductions(0);
+    setNetAmount(0);
+    setDevLevy(0);
   }
 
   return (
@@ -584,8 +871,8 @@ function PaymentVoucherForm() {
           error={errors?.netAmount?.message}
         >
           <Input
+            type="number"
             value={netAmount}
-            placeholder=""
             id="netAmount"
             readOnly
             {...register("netAmount")}
