@@ -209,6 +209,19 @@ function PaymentVoucherForm() {
         worksheet.mergeCells("Q43:R43"); //# ocSignatureValue
         worksheet.mergeCells("U43:V43"); //# ocDateValue
 
+        worksheet.mergeCells("A45:C45"); //# clarificationCelll
+        worksheet.mergeCells("A46:V46"); //# clarificationValue
+
+        //'A49'; # clNameCell
+        worksheet.mergeCells("B49:F49"); //# clNameValue
+        //'H49'; # clTitleCell
+        worksheet.mergeCells("I49:L49"); //# clTitleValue
+
+        worksheet.mergeCells("N49:049"); //# clSignatureCell
+        worksheet.mergeCells("P49:R49"); //# clSignatureValue
+        //'T49'; # clDateCell
+        worksheet.mergeCells("U49:V49"); //# clDateValue
+
         // Optionally, set some value or style to the merged cell
         const valueCell = worksheet.getCell("K1");
         valueCell.value = "#value";
@@ -523,7 +536,7 @@ function PaymentVoucherForm() {
         opNameCell.value = "Name(in Block Letters):";
         opNameCell.font = { bold: true, size: 14 };
         const opNameValue = worksheet.getCell("J41");
-        opNameValue.value = data.preparedBy;
+        opNameValue.value = data.preparedBy?.toUpperCase();
 
         ////////////////////////////////////////////////////
         const opSignature = worksheet.getCell("O41");
@@ -551,7 +564,7 @@ function PaymentVoucherForm() {
         ocNameCell.value = "Name(in Block Letters):";
         ocNameCell.font = { bold: true, size: 14 };
         const ocNameValue = worksheet.getCell("J43");
-        ocNameValue.value = data.checkedBy;
+        ocNameValue.value = data.checkedBy?.toUpperCase();
 
         ////////////////////////////////////////////////////
         const ocSignature = worksheet.getCell("O43");
@@ -570,6 +583,40 @@ function PaymentVoucherForm() {
         };
         ocDateCell.font = { bold: true, size: 14 };
 
+        /////////////////////////////////////////////////
+        const clarificationCell = worksheet.getCell("A45");
+        clarificationCell.value = "CLARIFICATION";
+        clarificationCell.font = { bold: true, size: 16 };
+
+        const clarificationValue = worksheet.getCell("A46");
+        clarificationValue.value =
+          "I certify that the services/goods have been fully satisfactory rendered/supplied, the price charged are fair and reasonable and the amount has been entered in my Vote Book";
+        clarificationValue.font = { bold: false, size: 14 };
+
+        //////////////////////////////////////////////////////
+        const clNameCell = worksheet.getCell("A49");
+        clNameCell.value = "Name:";
+        clNameCell.font = { bold: true, size: 14 };
+
+        const clTitleCell = worksheet.getCell("H49");
+        clTitleCell.value = "Title:";
+        clTitleCell.font = { bold: true, size: 14 };
+
+        const clSignatureCell = worksheet.getCell("N49");
+        clSignatureCell.value = "signature:";
+        clSignatureCell.alignment = {
+          vertical: "middle",
+          horizontal: "right",
+        };
+        clSignatureCell.font = { bold: true, size: 14 };
+
+        const clDateCell = worksheet.getCell("T49");
+        clDateCell.value = "Date:";
+        clDateCell.alignment = {
+          vertical: "middle",
+          horizontal: "right",
+        };
+        clDateCell.font = { bold: true, size: 14 };
         //////////////////////////////////////////////////////
         //TABLE BORDER
         /////////////////////////////////////////////////////
