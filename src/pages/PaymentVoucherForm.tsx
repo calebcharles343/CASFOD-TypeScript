@@ -11,6 +11,7 @@ import Select from "../ui/Select";
 import Textarea from "../ui/TextArea";
 import { data } from "../dropDownData";
 import { FormValues } from "../interfaces";
+import { base64String } from "../services/logo64";
 
 function PaymentVoucherForm() {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -115,12 +116,19 @@ function PaymentVoucherForm() {
         workbook.creator = data.preparedBy!;
         workbook.lastModifiedBy = "Her";
         workbook.created = new Date();
+
+        //ADD LOGO STEP 2
+        const imageId1 = workbook.addImage({
+          base64: base64String,
+          extension: "png",
+        });
+
         const worksheet = workbook.addWorksheet("Payment Voucher");
 
         //////////////////////////////////////////
         //HEADER
         //////////////////////////////////////////
-        worksheet.mergeCells("K1:L7"); //#valueCell
+        worksheet.mergeCells("J1:M7"); //#valueCell
         worksheet.mergeCells("A8:V8"); //#titleCell
         worksheet.mergeCells("A9:V9"); //#payVouherCell
         //////////////////////////////////////////
@@ -222,11 +230,18 @@ function PaymentVoucherForm() {
         //'T49'; # clDateCell
         worksheet.mergeCells("U49:V49"); //# clDateValue
 
+        //ADD LOGO STEP 3
+        worksheet.addImage(imageId1, {
+          tl: { col: 9, row: 1 },
+          ext: { width: 250, height: 100 },
+        });
+
+        // worksheet.addImage(imageId1, {
+        //   tl: { col: 10, row: 1 } as Anchor,
+        //   br: { col: 11, row: 6 } as Anchor,
+        // });
+
         ////////////////////////////////////////////////////////
-        const valueCell = worksheet.getCell("K1");
-        valueCell.value = "#value";
-        valueCell.alignment = { vertical: "bottom", horizontal: "center" };
-        valueCell.font = { bold: false, size: 14 };
 
         ////////////////////////////////////////////////////////
         const titleCell = worksheet.getCell("A8");
@@ -548,7 +563,7 @@ function PaymentVoucherForm() {
         //////////////////////////////////////////////////////
         const footerDescCell = worksheet.getCell("A38");
         footerDescCell.value =
-          "The above payment is correctas to rate, authority and standing regulations";
+          "The above payment is correct as to rate, authority and standing regulations";
         footerDescCell.font = { bold: false, size: 14 };
 
         //////////////////////////////////////////////////////
