@@ -99,8 +99,9 @@ function PaymentVoucherForm() {
     [grossAmount, vat, wht, devLevy, deductions]
   );
 
-  /////////////////////////////////////////////
-
+  ///////////////////////////////////////////////
+  //FORM SUBMIT FUNCTION
+  ///////////////////////////////////////////////
   async function formSubmit(data: Partial<FormValues>) {
     data.chartOfAccount = menuOption;
     data.chartOfAccountCode = chartCode;
@@ -133,7 +134,7 @@ function PaymentVoucherForm() {
         worksheet.mergeCells("A15:C15"); //# orgCodeCell
         worksheet.mergeCells("D15:G15"); //# orgCodeCellValue
         worksheet.mergeCells("K15:L15"); //# payingStationCell
-        worksheet.mergeCells("M15:O15"); //# payingStationCellValue
+        worksheet.mergeCells("M15:P15"); //# payingStationCellValue
         worksheet.mergeCells("R15:S15"); //# monthYearCell
         worksheet.mergeCells("T15:U15"); //# monthYearValue
         worksheet.mergeCells("A17:C17"); //# deptCodeCell
@@ -199,14 +200,14 @@ function PaymentVoucherForm() {
         worksheet.mergeCells("G41:I41"); //# opNameCell
         worksheet.mergeCells("J41:M41"); //# opNameValue
         worksheet.mergeCells("O41:P41"); //# opSignatureCell
-        worksheet.mergeCells("Q41:R41"); //# opSignatureValue
+        worksheet.mergeCells("Q41:S41"); //# opSignatureValue
         worksheet.mergeCells("U41:V41"); //# opDateValue
 
         worksheet.mergeCells("A43:F43"); //# ocVoucherCell
         worksheet.mergeCells("G43:I43"); //# ocNameCell
         worksheet.mergeCells("J43:M43"); //# ocNameValue
         worksheet.mergeCells("O43:P43"); //# ocSignatureCell
-        worksheet.mergeCells("Q43:R43"); //# ocSignatureValue
+        worksheet.mergeCells("Q43:S43"); //# ocSignatureValue
         worksheet.mergeCells("U43:V43"); //# ocDateValue
 
         worksheet.mergeCells("A45:C45"); //# clarificationCelll
@@ -217,82 +218,105 @@ function PaymentVoucherForm() {
         //'H49'; # clTitleCell
         worksheet.mergeCells("I49:L49"); //# clTitleValue
 
-        worksheet.mergeCells("N49:049"); //# clSignatureCell
+        worksheet.mergeCells("N49:O49"); //# clSignatureCell
         worksheet.mergeCells("P49:R49"); //# clSignatureValue
         //'T49'; # clDateCell
         worksheet.mergeCells("U49:V49"); //# clDateValue
 
-        // Optionally, set some value or style to the merged cell
+        ////////////////////////////////////////////////////////
         const valueCell = worksheet.getCell("K1");
         valueCell.value = "#value";
         valueCell.alignment = { vertical: "bottom", horizontal: "center" };
         valueCell.font = { bold: false, size: 14 };
 
+        ////////////////////////////////////////////////////////
         const titleCell = worksheet.getCell("A8");
         titleCell.value = "UNIQUE CARE AND SUPPORT FOUNDATION (CASFOD)";
         titleCell.alignment = { vertical: "middle", horizontal: "center" };
         titleCell.font = { bold: true, size: 20 };
 
+        ////////////////////////////////////////////////////////
         const payVoucherCell = worksheet.getCell("A9");
         payVoucherCell.value = "PAYMENT VOUCHER";
         payVoucherCell.alignment = { vertical: "middle", horizontal: "center" };
         payVoucherCell.font = { bold: true, size: 16 };
 
+        ////////////////////////////////////////////////////////
         const nameOFOrgCell = worksheet.getCell("A13");
         nameOFOrgCell.value = "Name of Organization:";
         nameOFOrgCell.font = { bold: true, size: 14 };
         const nameOFOrgValue = worksheet.getCell("D13");
         nameOFOrgValue.value = "UNIQUE CARE AND SUPPORT FOUNDATION";
 
+        ////////////////////////////////////////////////////////
         const pvNoCell = worksheet.getCell("S13");
         pvNoCell.value = "PV No:";
         pvNoCell.alignment = { vertical: "middle", horizontal: "right" };
         pvNoCell.font = { bold: true, size: 14 };
-        const pvNoValue = worksheet.getCell("U13");
-        pvNoValue.value = data.pvNumber;
 
+        const pvNoValue = worksheet.getCell("T13");
+        pvNoValue.value = data.pvNumber;
+        pvNoValue.border = { bottom: { style: "medium" } };
+
+        ////////////////////////////////////////////////////////
         const orgCodeCell = worksheet.getCell("A15");
         orgCodeCell.value = "Organization Code:";
         orgCodeCell.font = { bold: true, size: 14 };
         const orgCodeCellValue = worksheet.getCell("D15");
         orgCodeCellValue.value = "CAC/IT/NO 123565";
 
+        ////////////////////////////////////////////////////////
         const payingStation = worksheet.getCell("K15");
         payingStation.value = "Paying station:";
         payingStation.font = { bold: true, size: 14 };
         const payingStationValue = worksheet.getCell("M15");
         payingStationValue.value = data.payingStation;
+        payingStationValue.border = { bottom: { style: "medium" } };
 
+        ////////////////////////////////////////////////////////
         const monthYearCell = worksheet.getCell("R15");
         monthYearCell.value = "Month/Year:";
         monthYearCell.alignment = { vertical: "middle", horizontal: "right" };
         monthYearCell.font = { bold: true, size: 14 };
         const monthYearValue = worksheet.getCell("T15");
         monthYearValue.value = format(Date.now(), "yyyy-MM-dd");
+        monthYearValue.border = { bottom: { style: "medium" } };
 
+        ////////////////////////////////////////////////////////
         const deptCodeCell = worksheet.getCell("A17");
         deptCodeCell.value = "Departmental Code:";
         deptCodeCell.font = { bold: true, size: 14 };
-        const deptCodeCellValue = worksheet.getCell("D17");
-        deptCodeCellValue.value = data.departmentalCode;
+        const deptCodeValue = worksheet.getCell("D17");
+        deptCodeValue.value = data.departmentalCode;
+        deptCodeValue.border = { bottom: { style: "medium" } };
 
+        ////////////////////////////////////////////////////////
         const payCell = worksheet.getCell("A19");
         payCell.value = "PAY:";
         payCell.font = { bold: true, size: 14 };
         const payValue = worksheet.getCell("B19");
         payValue.value = data.payTo;
+        payValue.border = { bottom: { style: "medium" } };
 
+        ////////////////////////////////////////////////////////
         const beingCell = worksheet.getCell("A21");
         beingCell.value = "BEING:";
         beingCell.font = { bold: true, size: 14 };
-        const beingValue = worksheet.getCell("B21");
-        beingValue.value = data.being;
+        const beingValue1 = worksheet.getCell("B21");
+        const beingValue2 = worksheet.getCell("A22");
+        beingValue1.value = data.being;
+        beingValue1.border = { bottom: { style: "medium" } };
+        beingValue2.border = { bottom: { style: "medium" } };
 
+        ////////////////////////////////////////////////////////
         const amountInWordsCell = worksheet.getCell("A24");
         amountInWordsCell.value = "Amount In Words:";
         amountInWordsCell.font = { bold: true, size: 14 };
-        const amountInWordsValue = worksheet.getCell("D24");
-        amountInWordsValue.value = data.amountInWords;
+        const amountInWordsValue1 = worksheet.getCell("D24");
+        const amountInWordsValue2 = worksheet.getCell("A25");
+        amountInWordsValue1.value = data.amountInWords;
+        amountInWordsValue1.border = { bottom: { style: "medium" } };
+        amountInWordsValue2.border = { bottom: { style: "medium" } };
 
         ///////////////////////////////////////////////////
         //TABLE1 DATA
@@ -537,15 +561,20 @@ function PaymentVoucherForm() {
         opNameCell.font = { bold: true, size: 14 };
         const opNameValue = worksheet.getCell("J41");
         opNameValue.value = data.preparedBy?.toUpperCase();
+        opNameValue.border = { bottom: { style: "medium" } };
 
         ////////////////////////////////////////////////////
-        const opSignature = worksheet.getCell("O41");
-        opSignature.value = "signature:";
-        opSignature.alignment = {
+        const opSignatureCell = worksheet.getCell("O41");
+        opSignatureCell.value = "signature:";
+        opSignatureCell.alignment = {
           vertical: "middle",
           horizontal: "right",
         };
-        opSignature.font = { bold: true, size: 14 };
+        opSignatureCell.font = { bold: true, size: 14 };
+        const opSignatureValue = worksheet.getCell("Q41");
+        opSignatureValue.border = { bottom: { style: "medium" } };
+
+        ////////////////////////////////////////////////////
 
         const opDateCell = worksheet.getCell("T41");
         opDateCell.value = "Date:";
@@ -554,6 +583,8 @@ function PaymentVoucherForm() {
           horizontal: "right",
         };
         opDateCell.font = { bold: true, size: 14 };
+        const opDateValue = worksheet.getCell("U41");
+        opDateValue.border = { bottom: { style: "medium" } };
         ////////////////////////////////////////////////////////////
         const ocVoucherCell = worksheet.getCell("A43");
         ocVoucherCell.value = "Officer who checked this Voucher:";
@@ -565,6 +596,7 @@ function PaymentVoucherForm() {
         ocNameCell.font = { bold: true, size: 14 };
         const ocNameValue = worksheet.getCell("J43");
         ocNameValue.value = data.checkedBy?.toUpperCase();
+        ocNameValue.border = { bottom: { style: "medium" } };
 
         ////////////////////////////////////////////////////
         const ocSignature = worksheet.getCell("O43");
@@ -575,6 +607,10 @@ function PaymentVoucherForm() {
         };
         ocSignature.font = { bold: true, size: 14 };
 
+        const ocSignatureValue = worksheet.getCell("Q43");
+        ocSignatureValue.border = { bottom: { style: "medium" } };
+
+        ////////////////////////////////////////////////////
         const ocDateCell = worksheet.getCell("T43");
         ocDateCell.value = "Date:";
         ocDateCell.alignment = {
@@ -582,6 +618,8 @@ function PaymentVoucherForm() {
           horizontal: "right",
         };
         ocDateCell.font = { bold: true, size: 14 };
+        const ocDateValue = worksheet.getCell("U43");
+        ocDateValue.border = { bottom: { style: "medium" } };
 
         /////////////////////////////////////////////////
         const clarificationCell = worksheet.getCell("A45");
@@ -597,11 +635,21 @@ function PaymentVoucherForm() {
         const clNameCell = worksheet.getCell("A49");
         clNameCell.value = "Name:";
         clNameCell.font = { bold: true, size: 14 };
+        const clNameValue = worksheet.getCell("B49");
+        clNameValue.border = { bottom: { style: "medium" } };
 
+        //////////////////////////////////////////////////////
         const clTitleCell = worksheet.getCell("H49");
         clTitleCell.value = "Title:";
         clTitleCell.font = { bold: true, size: 14 };
+        clTitleCell.alignment = {
+          vertical: "middle",
+          horizontal: "right",
+        };
+        const clTitleValue = worksheet.getCell("I49");
+        clTitleValue.border = { bottom: { style: "medium" } };
 
+        //////////////////////////////////////////////////////
         const clSignatureCell = worksheet.getCell("N49");
         clSignatureCell.value = "signature:";
         clSignatureCell.alignment = {
@@ -609,7 +657,10 @@ function PaymentVoucherForm() {
           horizontal: "right",
         };
         clSignatureCell.font = { bold: true, size: 14 };
+        const clSignatureValue = worksheet.getCell("P49");
+        clSignatureValue.border = { bottom: { style: "medium" } };
 
+        //////////////////////////////////////////////////////
         const clDateCell = worksheet.getCell("T49");
         clDateCell.value = "Date:";
         clDateCell.alignment = {
@@ -617,6 +668,8 @@ function PaymentVoucherForm() {
           horizontal: "right",
         };
         clDateCell.font = { bold: true, size: 14 };
+        const clDateValue = worksheet.getCell("U49");
+        clDateValue.border = { bottom: { style: "medium" } };
         //////////////////////////////////////////////////////
         //TABLE BORDER
         /////////////////////////////////////////////////////
