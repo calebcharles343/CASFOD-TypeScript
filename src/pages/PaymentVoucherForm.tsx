@@ -1,7 +1,4 @@
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import ExcelJS from "exceljs";
-import { format } from "date-fns";
 
 import Form from "../ui/Form";
 import FormRow from "../ui/FormRow";
@@ -16,6 +13,7 @@ import { data } from "../dropDownData";
 import { FormValues } from "../interfaces";
 
 function PaymentVoucherForm() {
+  const [isDownloading, setIsDownloading] = useState(false);
   const [menuOption, setMenuOption] = useState("");
   const [chartCode, setChartCode] = useState("");
   const [grossAmount, setGrossAmount] = useState<number>();
@@ -25,8 +23,8 @@ function PaymentVoucherForm() {
   const [netAmount, setNetAmount] = useState<number>();
   const [devLevy, setDevLevy] = useState<number>();
 
-  const [date, setDate] = useState<Date>(new Date());
-  const { register, handleSubmit, formState } = useForm<Partial<FormValues>>();
+  const { register, handleSubmit, formState, reset } =
+    useForm<Partial<FormValues>>();
   const { errors } = formState;
 
   /////////////////////////////////////////
@@ -105,8 +103,9 @@ function PaymentVoucherForm() {
   async function formSubmit(data: Partial<FormValues>) {
     data.chartOfAccount = menuOption;
     data.chartOfAccountCode = chartCode;
-    data.netAmount = netAmount?.toString();
 
+    data.netAmount = netAmount?.toString();
+    setIsDownloading(true);
     try {
       if (data) {
         const workbook = new ExcelJS.Workbook();
@@ -279,7 +278,7 @@ function PaymentVoucherForm() {
         monthYearCell.alignment = { vertical: "middle", horizontal: "right" };
         monthYearCell.font = { bold: true, size: 14 };
         const monthYearValue = worksheet.getCell("T15");
-        monthYearValue.value = format(Date.now(), "yyyy-MM-dd");
+        monthYearValue.value = data.date;
         monthYearValue.border = { bottom: { style: "medium" } };
 
         ////////////////////////////////////////////////////////
@@ -440,7 +439,7 @@ function PaymentVoucherForm() {
           vertical: "middle",
           horizontal: "center",
         };
-        netAmountValue.value = data.netAmount;
+        netAmountValue.value = Number(data.netAmount).toFixed(2);
 
         ///////////////////////////////////////////////////
         //TABLE2 DATA
@@ -546,11 +545,13 @@ function PaymentVoucherForm() {
         };
         certifyCell.font = { bold: true, size: 16 };
 
+        //////////////////////////////////////////////////////
         const footerDescCell = worksheet.getCell("A38");
         footerDescCell.value =
           "The above payment is correctas to rate, authority and standing regulations";
         footerDescCell.font = { bold: false, size: 14 };
 
+        //////////////////////////////////////////////////////
         const opVoucherCell = worksheet.getCell("A41");
         opVoucherCell.value = "Officer who prepared this Voucher:";
         opVoucherCell.font = { bold: true, size: 14 };
@@ -731,6 +732,7 @@ function PaymentVoucherForm() {
         ////////////////////////////////////////
         //DOWNLOAD FILE
         ////////////////////////////////////////
+
         const buffer = await workbook.xlsx.writeBuffer();
         const fileType =
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
@@ -766,6 +768,7 @@ function PaymentVoucherForm() {
     ///////////////////////////////////
     //RESET STATE
     ///////////////////////////////////
+    setIsDownloading(false);
 
     setGrossAmount(0);
     setVat(0);
@@ -773,6 +776,8 @@ function PaymentVoucherForm() {
     setDeductions(0);
     setNetAmount(0);
     setDevLevy(0);
+    reset();
+    alert("File downloaded successfully");
   }
 
   return (
@@ -821,13 +826,14 @@ function PaymentVoucherForm() {
         </FormRow>
 
         <FormRow label="Month/Year" type="small">
-          <DatePicker
+          {/* <DatePicker
             id="date"
-            // onChange={(date) => setDate(date)}
-            selected={date}
+        
+            // selected={date}
             dateFormat="dd/MM/yyyy"
-            // {...register("date")}
-          />
+            {...register("date")}
+          /> */}
+          <Input type="date" id="date" {...register("date")} />
         </FormRow>
       </Row>
 
@@ -1068,7 +1074,9 @@ function PaymentVoucherForm() {
         </FormRow>
       </Row>
 
-      <Button size="medium">Download</Button>
+      <Button size="medium" disabled={isDownloading}>
+        Download
+      </Button>
     </Form>
   );
 }
