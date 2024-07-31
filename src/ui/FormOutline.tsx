@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
+import { FormProps } from "../interfaces";
 
-const Form = styled.form`
+const Form = styled.form<FormProps>`
   ${(props) =>
     props.type === "regular" &&
     css`

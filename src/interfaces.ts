@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react";
+
 export interface FormValues {
   departmentalCode: string;
   pvNumber: string;
@@ -28,6 +30,26 @@ export interface ButtonProps {
 
 export interface StyledFormRowProps {
   type?: "small" | "medium" | "large";
+}
+
+export interface RowProps {
+  type?: "horizontal";
+}
+export interface OptionProps {
+  position: string;
+  code: string;
+}
+
+export interface SelectProps {
+  id: string;
+  type: string;
+  options: OptionProps[];
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  // data: OptionProps[];
+}
+export interface FormProps {
+  type?: "regular" | "modal";
 }
 
 export interface FormRowProps {

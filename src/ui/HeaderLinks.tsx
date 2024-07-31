@@ -10,19 +10,15 @@ const NavList = styled.ul`
   justify-content: center;
 `;
 
-const Li = styled.li`
-  text-decoration: none;
-`;
-
 const StyledNavLink = styled(NavLink)`
   &:link,
   &:visited {
     display: flex;
     align-items: center;
     gap: 1.2rem;
-    font-family: 'Roboto', sans-serif ;
+    font-family: "Roboto", sans-serif;
 
-    color: #000000
+    color: #000000;
     font-size: 1.5rem;
     font-weight: 500;
     padding: 1.2rem 2.4rem;
@@ -32,15 +28,14 @@ const StyledNavLink = styled(NavLink)`
   }
 
   /* This works because react-router places the active class on the active NavLink */
-   &:hover,
+  &:hover,
   &:active,
   &.active:link,
   &.active:visited {
     color: #ef476f;
     border-bottom: 1px solid #ef476f;
     /* background-color: var(--color-grey-50); */
-    
-  } 
+  }
 `;
 
 function HeaderLinks() {
