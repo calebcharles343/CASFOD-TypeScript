@@ -936,6 +936,7 @@ function PaymentVoucherForm() {
             type="number"
             min="0"
             max="100"
+            step=".1"
             value={vat || ""}
             placeholder=""
             id="vat"
@@ -948,6 +949,7 @@ function PaymentVoucherForm() {
             type="number"
             min="0"
             max="100"
+            step=".1"
             value={wht || ""}
             placeholder=""
             id="wht"
@@ -960,6 +962,7 @@ function PaymentVoucherForm() {
             type="number"
             min="0"
             max="100"
+            step=".1"
             value={devLevy || ""}
             placeholder=""
             id="devLevy"
@@ -974,6 +977,7 @@ function PaymentVoucherForm() {
           <Input
             type="number"
             min="0"
+            step=".1"
             placeholder=""
             value={deductions || ""}
             id="otherDeductions"
