@@ -136,7 +136,7 @@ function PaymentVoucherForm() {
         //////////////////////////////////////////
         worksheet.mergeCells("A13:C13"); //# nameOFOrgCell
         worksheet.mergeCells("D13:I13"); //# nameOFOrgValue
-        // worksheet.mergeCells("O13:P13"); //# pvNoCell
+        //'A49'; # pvNoCell
         worksheet.mergeCells("T13:U13"); //# pvNoValue
         worksheet.mergeCells("A15:C15"); //# orgCodeCell
         worksheet.mergeCells("D15:G15"); //# orgCodeCellValue
@@ -146,7 +146,9 @@ function PaymentVoucherForm() {
         worksheet.mergeCells("T15:U15"); //# monthYearValue
         worksheet.mergeCells("A17:C17"); //# deptCodeCell
         worksheet.mergeCells("D17:G17"); //# deptCodeValue
+        //'A19'; # payCell
         worksheet.mergeCells("B19:R19"); //# payCellValue
+        //'A21'; # beingCell
         worksheet.mergeCells("B21:V21"); //# beingValue
         worksheet.mergeCells("A22:V22"); //# beingValue
         worksheet.mergeCells("A24:C24"); //# amountInWordsCell
@@ -740,9 +742,6 @@ function PaymentVoucherForm() {
             left: { style: "thin" },
           };
         });
-        ////////////////////////////////////////
-        //ROWS AND COLUMN
-        ////////////////////////////////////////
 
         ////////////////////////////////////////
         //DOWNLOAD FILE
