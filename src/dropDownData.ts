@@ -5,11 +5,11 @@ export const data = [
   { position: "Programs Officer", code: "5000.B1.003.e" },
   { position: "Human Resource Officer", code: "5000.B1.004.e" },
   { position: "Finance Officer", code: "5000.B1.005.e" },
-  { position: "Supply Chain officer", code: "5000.B1.006.e" },
+  { position: "Supply Chain Officer", code: "5000.B1.006.e" },
   { position: "MEAL Officer ", code: "5000.B1.007.e" },
   { position: "WASH Officer", code: "5000.B1.008.e" },
   { position: "Education Officer ", code: "5000.B1.009.e" },
-  { position: "Nutrition officer ", code: "5000.B1.010.e" },
+  { position: "Nutrition Officer ", code: "5000.B1.010.e" },
   { position: "IT and Communication Officer", code: "5000.B1.011.e" },
   { position: "Livelihood Officer ", code: "5000.B1.012.e" },
   { position: "Protection Officer", code: "5000.B1.013.e" },
@@ -24,10 +24,30 @@ export const data = [
   { position: "Petty Cash Save ", code: "6001.B3.003.e" },
   { position: "Office Table", code: "6001.B3.004.e" },
   { position: "Office Chair", code: "6001.B3.005.e" },
-  { position: "Goal 1: Improve access to education ", code: "6003.B5.001.e" },
+  {
+    position:
+      "Goal 1: Improved health and nutrition status of women and children",
+    code: "6000.B4.001.e",
+  },
+  {
+    position:
+      "Goal 2: increased education  opportunities with a focus on girls",
+    code: "6000.B4.002.e",
+  },
+  {
+    position: "Goal 3: Improved protection for women and children",
+    code: "6000.B4.003.e",
+  },
+  {
+    position: "Goal 4: Improve access to WASH products and services",
+    code: "6000.B4.004.e",
+  },
+  { position: "Goal 5: Promote sustainable livelihood", code: "6000.B4.005.e" },
+
+  { position: "International Day of Education", code: "6003.B5.001.e" },
   { position: "Humanitarian Day (16 August 2023)", code: "6003.B5.002.e" },
   {
-    position: "16days of Activism  against Gender-Base Violence ",
+    position: "16days of Activism against Gender-Base Violence ",
     code: "6003.B5.003.e",
   },
   { position: "International Day of the Girl Child ", code: "6003.B5.004.e" },
@@ -52,4 +72,18 @@ export const data = [
   { position: "Transportation Refund", code: "7000.B9.003.e" },
   { position: "DSA", code: "7000.B9.004.e" },
   { position: "Transfer to Partners", code: "9000.B10.001.e" },
+];
+
+export const categories = [
+  { position: "--", code: "--" },
+  { position: "B.1. Personnel", code: "5000" },
+  { position: "B.2. Consultants and External Contributors", code: "6002" },
+  { position: "B.3. Equipment and Capital Purchases", code: "6001" },
+  { position: "B.4. Program supplies", code: "6000" },
+  { position: "B.5. Events", code: "6003" },
+  { position: "B.6. Administration and Overhead", code: "7001" },
+  { position: "B.7. Communications and IT", code: "7002" },
+  { position: "B.8. Trainings", code: "8000" },
+  { position: "B.9. Travels", code: "7000" },
+  { position: "B.10. Transfers and grants to counterpart", code: "9000" },
 ];

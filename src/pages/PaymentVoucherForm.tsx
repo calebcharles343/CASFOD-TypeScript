@@ -9,24 +9,32 @@ import { useEffect, useState, ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 import Select from "../ui/Select";
 import Textarea from "../ui/TextArea";
-import { data } from "../dropDownData";
-import { FormValues } from "../interfaces";
+import { data, categories } from "../dropDownData";
+import { Filter, FormValues } from "../interfaces";
 import { base64String } from "../services/logo64";
 
 function PaymentVoucherForm() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [menuOption, setMenuOption] = useState("");
   const [chartCode, setChartCode] = useState("");
+  const [catOption, setCatOption] = useState("");
+  const [catCode, setCatCode] = useState("");
+  const [dataFilter, setDataFilter] = useState<Filter[]>();
   const [grossAmount, setGrossAmount] = useState<number>();
   const [vat, setVat] = useState<number>();
   const [wht, setWht] = useState<number>();
   const [deductions, setDeductions] = useState<number>();
   const [netAmount, setNetAmount] = useState<number>();
   const [devLevy, setDevLevy] = useState<number>();
+  const [date, setDate] = useState<string>();
+  const [pvNumber, setPvNumber] = useState<string>();
+  const [grantCode, setGrantCode] = useState<string>();
 
   const { register, handleSubmit, formState, reset } =
     useForm<Partial<FormValues>>();
   const { errors } = formState;
+
+  const dState = { position: "--", code: "--" };
 
   /////////////////////////////////////////
   //UPDATE ON MOUNT
@@ -48,11 +56,29 @@ function PaymentVoucherForm() {
     setGrossAmount(Number(e.target.value));
   }
 
+  /////////////////////////////////////////////////////////
+
+  function handleDate(e: ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+    setDate(e.target.value);
+  }
+
+  /////////////////////////////////////////////////////////
+
+  function handleGrantCode(e: ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+    setGrantCode(e.target.value);
+  }
+
+  /////////////////////////////////////////////////////////
+
   function handleVat(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
 
     setVat(Number(e.target.value));
   }
+
+  /////////////////////////////////////////////////////////
 
   function handleWht(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -60,11 +86,15 @@ function PaymentVoucherForm() {
     setWht(Number(e.target.value));
   }
 
+  /////////////////////////////////////////////////////////
+
   function handleDevLevy(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
 
     setDevLevy(Number(e.target.value));
   }
+
+  /////////////////////////////////////////////////////////
 
   function handleOtherDeductions(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -72,13 +102,30 @@ function PaymentVoucherForm() {
     setDeductions(Number(e.target.value));
   }
 
+  ////////////////////////////////////////////////////////////////
+
+  function handleChartOfAccCat(e: ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+
+    const selected = e.target.value;
+    setCatOption(selected);
+
+    const catObject = categories.find(
+      (c) => c.position.trim() === selected.trim()
+    );
+    setCatCode(catObject!.code);
+    setChartCode(dState.code);
+  }
+
+  ////////////////////////////////////////////////////////////////
+
   function handleChartOfAcc(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
 
     const selected = e.target.value;
     setMenuOption(selected);
 
-    const codeObject = data.find((d) => d.position.trim() == selected.trim());
+    const codeObject = data.find((d) => d.position.trim() === selected.trim());
     setChartCode(codeObject!.code);
   }
 
@@ -98,14 +145,38 @@ function PaymentVoucherForm() {
     [grossAmount, vat, wht, devLevy, deductions]
   );
 
+  useEffect(
+    function () {
+      let catData = data.filter((d) => d.code.split(".")[0] === catCode);
+
+      catData.unshift(dState);
+      setDataFilter(catData);
+    },
+    [catOption, catCode]
+  );
+
+  useEffect(
+    function () {
+      if (grantCode && date) {
+        const dateArray = date.split("-");
+        setPvNumber(`CASFOD/${grantCode}/${dateArray[1]}/${dateArray[0]}-001`);
+      }
+    },
+    [grantCode, date]
+  );
+
   ///////////////////////////////////////////////
   //FORM SUBMIT FUNCTION
   ///////////////////////////////////////////////
   async function formSubmit(data: Partial<FormValues>) {
     data.chartOfAccount = menuOption;
     data.chartOfAccountCode = chartCode;
+    data.chartOfAccountCategories = catCode;
+    data.pvNumber = pvNumber;
 
     data.netAmount = netAmount?.toString();
+    console.log(data);
+
     setIsDownloading(true);
     try {
       if (data) {
@@ -137,13 +208,13 @@ function PaymentVoucherForm() {
         worksheet.mergeCells("A13:C13"); //# nameOFOrgCell
         worksheet.mergeCells("D13:I13"); //# nameOFOrgValue
         //'A49'; # pvNoCell
-        worksheet.mergeCells("T13:U13"); //# pvNoValue
+        worksheet.mergeCells("T13:V13"); //# pvNoValue
         worksheet.mergeCells("A15:C15"); //# orgCodeCell
         worksheet.mergeCells("D15:G15"); //# orgCodeCellValue
         worksheet.mergeCells("K15:L15"); //# payingStationCell
         worksheet.mergeCells("M15:P15"); //# payingStationCellValue
         worksheet.mergeCells("R15:S15"); //# monthYearCell
-        worksheet.mergeCells("T15:U15"); //# monthYearValue
+        worksheet.mergeCells("T15:V15"); //# monthYearValue
         worksheet.mergeCells("A17:C17"); //# deptCodeCell
         worksheet.mergeCells("D17:G17"); //# deptCodeValue
         //'A19'; # payCell
@@ -769,7 +840,6 @@ function PaymentVoucherForm() {
           link.style.visibility = "hidden";
           document.body.appendChild(link);
           link.click();
-          console.log("clicked");
           document.body.removeChild(link);
           // put alert showing file downloaded succesfully
           // handle loading state
@@ -790,6 +860,8 @@ function PaymentVoucherForm() {
     setDeductions(0);
     setNetAmount(0);
     setDevLevy(0);
+    setPvNumber("");
+    setGrantCode("");
     reset();
     alert("File downloaded successfully");
   }
@@ -816,11 +888,14 @@ function PaymentVoucherForm() {
           error={errors?.pvNumber?.message}
         >
           <Input
+            value={pvNumber}
             placeholder=""
             id="pvNumber"
-            {...register("pvNumber", {
-              required: "This field is required",
-            })}
+            readOnly
+            {...register("pvNumber")}
+            // {...register("pvNumber", {
+            //   required: "This field is required",
+            // })}
           />
         </FormRow>
       </Row>
@@ -840,14 +915,12 @@ function PaymentVoucherForm() {
         </FormRow>
 
         <FormRow label="Month/Year" type="small">
-          {/* <DatePicker
+          <Input
+            type="date"
             id="date"
-        
-            // selected={date}
-            dateFormat="dd/MM/yyyy"
             {...register("date")}
-          /> */}
-          <Input type="date" id="date" {...register("date")} />
+            onChange={handleDate}
+          />
         </FormRow>
       </Row>
 
@@ -908,6 +981,7 @@ function PaymentVoucherForm() {
             {...register("grantCode", {
               required: "This field is required",
             })}
+            onChange={handleGrantCode}
           />
         </FormRow>
 
@@ -1002,6 +1076,21 @@ function PaymentVoucherForm() {
             {...register("netAmount")}
           />
         </FormRow>
+
+        <FormRow
+          label="Chart of Account Categories*"
+          type="medium"
+          error={errors?.chartOfAccountCategories?.message}
+        >
+          <Select
+            id="chartOfAccountCategories"
+            type="gray"
+            options={categories}
+            value={catOption}
+            {...register("chartOfAccountCategories")}
+            onChange={handleChartOfAccCat}
+          />
+        </FormRow>
       </Row>
 
       <Row>
@@ -1013,7 +1102,7 @@ function PaymentVoucherForm() {
           <Select
             id="chartOfAccount"
             type="gray"
-            options={data}
+            options={dataFilter}
             value={menuOption}
             onChange={handleChartOfAcc}
           />

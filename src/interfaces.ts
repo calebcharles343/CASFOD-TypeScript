@@ -15,6 +15,7 @@ export interface FormValues {
   devLevy: string;
   otherDeductions: string;
   netAmount: string;
+  chartOfAccountCategories: string;
   chartOfAccount: string;
   chartOfAccountCode: string;
   projBudgetLine: string;
@@ -43,7 +44,7 @@ export interface OptionProps {
 export interface SelectProps {
   id: string;
   type: string;
-  options: OptionProps[];
+  options: Filter[] | undefined;
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   // data: OptionProps[];
@@ -57,4 +58,9 @@ export interface FormRowProps {
   error: string | undefined;
   children: any;
   type: "small" | "medium" | "large";
+}
+
+export interface Filter {
+  position: string;
+  code: string;
 }

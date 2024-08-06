@@ -21,9 +21,10 @@ const StyledSelect = styled.select<StyledSelectT>`
 `;
 
 function Select({ options, value, onChange, ...props }: SelectProps) {
+  let optionState = options ? options : [{ position: "--", code: "--" }];
   return (
     <StyledSelect value={value} onChange={onChange} {...props}>
-      {options.map((option: OptionProps) => (
+      {optionState.map((option: OptionProps) => (
         <option value={option.position} key={option.position}>
           {option.position}
         </option>
