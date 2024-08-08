@@ -25,8 +25,31 @@ export interface FormValues {
   checkedBy: string;
 }
 
+export interface FormValues2 {
+  date: string;
+  department: string;
+  suggestedSupplier: string;
+  RequiredBy: string;
+  city: string;
+  periodOfActivity: string;
+  activityDescription: string;
+  expenseChargedTo: string;
+  acountCode: string;
+  requestedBy: string;
+  address: string;
+  finalDeliveryPoint: string;
+  approvedBy: string;
+  discription: string;
+  frequency: string;
+  quantity: string;
+  unit: string;
+  unitCost: string;
+  total: string;
+}
+
 export interface ButtonProps {
   size: "small" | "medium" | "large";
+  type: any;
 }
 
 export interface StyledFormRowProps {
@@ -55,10 +78,17 @@ export interface FormProps {
 
 export interface FormRowProps {
   label: string;
-  error: string | undefined;
+  error: any;
   children: any;
   type: "small" | "medium" | "large";
 }
+/*
+ error:
+    | string
+    | FieldError
+    | Merge<FieldError, FieldErrorsImpl<any>>
+    | undefined;
+*/
 
 export interface Filter {
   position: string;
