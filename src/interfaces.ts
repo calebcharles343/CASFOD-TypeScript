@@ -29,7 +29,7 @@ export interface FormValues2 {
   date: string;
   department: string;
   suggestedSupplier: string;
-  RequiredBy: string;
+  requiredBy: string;
   city: string;
   periodOfActivity: string;
   activityDescription: string;
