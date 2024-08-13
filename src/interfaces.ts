@@ -47,6 +47,16 @@ export interface FormValues2 {
   total: string;
 }
 
+export interface ItemGroup {
+  description: string;
+  frequency: string;
+  quantity: string;
+  unit: string;
+  unitCost: string;
+  total: any;
+  disabled: boolean;
+}
+
 export interface ButtonProps {
   size: "small" | "medium" | "large";
   type: any;

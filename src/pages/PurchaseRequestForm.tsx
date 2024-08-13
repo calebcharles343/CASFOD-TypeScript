@@ -9,19 +9,9 @@ import Form from "../ui/Form";
 import Button from "../ui/Button";
 import { FaPlus } from "react-icons/fa6";
 import styled from "styled-components";
-import { FormValues2 } from "../interfaces";
+import { FormValues2, ItemGroup } from "../interfaces";
 import { useForm } from "react-hook-form";
 import { base64String } from "../services/logo64";
-
-interface ItemGroup {
-  description: string;
-  frequency: string;
-  quantity: string;
-  unit: string;
-  unitCost: string;
-  total: any;
-  disabled: boolean;
-}
 
 const StyledPurchaseItem = styled.div`
   width: 80%;
@@ -39,6 +29,7 @@ const ItemContainer = styled.div`
 `;
 
 const ItemDeleteButton = styled.button`
+  text-align: center;
   color: #fff;
   background-color: #f03e3e;
   margin-right: 2%;
@@ -53,21 +44,21 @@ const ItemDeleteButton = styled.button`
 `;
 
 const ItemDoneButton = styled.button<{ isDisabled: boolean }>`
+  text-align: center;
   color: #212529;
-  /* background-color: #dee2e6; */
   margin-right: 2%;
   border: none;
   padding: 3px 5px;
   border-radius: 5px;
   transition: all 0.2s;
+  background-color: #4c6ef5;
 
   &:hover {
-    background-color: #ced4da;
-    background-color: ${(props) => (props.isDisabled ? "#dee2e6" : "#91a7ff")};
+    background-color: #748ffc;
   }
 
-  background-color: ${(props) => (props.isDisabled ? "#91a7ff" : "#dee2e6")};
-  color: ${(props) => (props.isDisabled ? "#fff" : "#212529")};
+  /* color: ${(props) => (props.isDisabled ? "#fff" : "#212529")}; */
+  color: #fff;
 `;
 
 const FormWithGroups: React.FC = () => {
@@ -147,7 +138,6 @@ const FormWithGroups: React.FC = () => {
 
     console.log(newData);
     console.log(itemGroup);
-    reset();
 
     try {
       if (newData) {
@@ -567,6 +557,13 @@ const FormWithGroups: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
+
+    //////////////////////////
+    //RESET FORM STATE
+    /////////////////////////
+    reset();
+    setItemGroups([]);
+    alert("File downloaded successfully");
   }
 
   ///////////////////////////////////////////////////////////
@@ -690,7 +687,7 @@ const FormWithGroups: React.FC = () => {
             </Row>
 
             <Row>
-              <FormRow label="Frequency" type="small">
+              <FormRow label="Frequency *" type="small">
                 <Input
                   placeholder=""
                   type="number"
