@@ -20,6 +20,7 @@ interface ItemGroup {
   unit: string;
   unitCost: string;
   total: any;
+  disabled: boolean;
 }
 
 const StyledPurchaseItem = styled.div`
@@ -35,6 +36,38 @@ const ItemContainer = styled.div`
   align-items: center;
   max-height: 400px;
   overflow-y: scroll;
+`;
+
+const ItemDeleteButton = styled.button`
+  color: #fff;
+  background-color: #f03e3e;
+  margin-right: 2%;
+  border: none;
+  padding: 3px 5px;
+  border-radius: 5px;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #e03131;
+  }
+`;
+
+const ItemDoneButton = styled.button<{ isDisabled: boolean }>`
+  color: #212529;
+  /* background-color: #dee2e6; */
+  margin-right: 2%;
+  border: none;
+  padding: 3px 5px;
+  border-radius: 5px;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #ced4da;
+    background-color: ${(props) => (props.isDisabled ? "#dee2e6" : "#91a7ff")};
+  }
+
+  background-color: ${(props) => (props.isDisabled ? "#91a7ff" : "#dee2e6")};
+  color: ${(props) => (props.isDisabled ? "#fff" : "#212529")};
 `;
 
 const FormWithGroups: React.FC = () => {
@@ -71,6 +104,7 @@ const FormWithGroups: React.FC = () => {
         unit: "",
         unitCost: "",
         total: "",
+        disabled: false,
       },
     ]);
   };
@@ -80,7 +114,14 @@ const FormWithGroups: React.FC = () => {
     setItemGroups(filter);
   };
 
-  // Update input3 whenever input1 or input2 changes
+  const handledEdit = (index: number) => {
+    setItemGroups(
+      itemGroup.map((group, i) =>
+        i === index ? { ...group, disabled: !group.disabled } : group
+      )
+    );
+  };
+
   useEffect(() => {
     const updatedGroups = itemGroup.map((group) => ({
       ...group,
@@ -180,6 +221,7 @@ const FormWithGroups: React.FC = () => {
 
         const dateValue = worksheet.getCell("C9");
         dateValue.value = newData.data.date;
+        dateValue.font = { size: 12 };
 
         // SUGGESTED SUPPLIER
         const suggestedSupplier = worksheet.getCell("A10");
@@ -192,6 +234,7 @@ const FormWithGroups: React.FC = () => {
 
         const suggestedSupplierValue = worksheet.getCell("C10");
         suggestedSupplierValue.value = newData.data.suggestedSupplier;
+        suggestedSupplierValue.font = { size: 12 };
 
         // ADDRESS
         const address = worksheet.getCell("A11");
@@ -201,6 +244,7 @@ const FormWithGroups: React.FC = () => {
 
         const addressValue = worksheet.getCell("C11");
         addressValue.value = newData.data.address;
+        addressValue.font = { size: 12 };
 
         // CITY
         const city = worksheet.getCell("A12");
@@ -210,6 +254,7 @@ const FormWithGroups: React.FC = () => {
 
         const cityValue = worksheet.getCell("C12");
         cityValue.value = newData.data.city;
+        cityValue.font = { size: 12 };
 
         //ACTIVITY DESCRIPTION
         const activityDescription = worksheet.getCell("A13");
@@ -222,6 +267,7 @@ const FormWithGroups: React.FC = () => {
 
         const activityDescriptionValue = worksheet.getCell("C13");
         activityDescriptionValue.value = newData.data.activityDescription;
+        activityDescriptionValue.font = { size: 12 };
 
         // DEPARTMENT
         const department = worksheet.getCell("G9");
@@ -231,6 +277,7 @@ const FormWithGroups: React.FC = () => {
 
         const departmentValue = worksheet.getCell("I9");
         departmentValue.value = newData.data.department;
+        departmentValue.font = { size: 12 };
 
         // REQUISITIONED BY
         const requisitionedBy = worksheet.getCell("G10");
@@ -243,6 +290,7 @@ const FormWithGroups: React.FC = () => {
 
         const requisitionedByValue = worksheet.getCell("I10");
         requisitionedByValue.value = newData.data.requiredBy;
+        requisitionedByValue.font = { size: 12 };
 
         // FINAL DELIVERY POINT
         const finalDeliveryPoint = worksheet.getCell("G11");
@@ -255,6 +303,7 @@ const FormWithGroups: React.FC = () => {
 
         const finalDeliveryPointValue = worksheet.getCell("I11");
         finalDeliveryPointValue.value = newData.data.finalDeliveryPoint;
+        finalDeliveryPointValue.font = { size: 12 };
 
         // PERIOD OF ACTIVITY
         const periodOfActivity = worksheet.getCell("G12");
@@ -267,6 +316,7 @@ const FormWithGroups: React.FC = () => {
 
         const periodOfActivityValue = worksheet.getCell("I12");
         periodOfActivityValue.value = newData.data.periodOfActivity;
+        periodOfActivityValue.font = { size: 12 };
 
         ////////////////////////////////////////
         //TABLE
@@ -354,21 +404,27 @@ const FormWithGroups: React.FC = () => {
 
           const tableItem = worksheet.getCell(`A${16 + i}`);
           tableItem.value = `${i + 1}`;
+          tableItem.font = { size: 12 };
 
           const tableFrequency = worksheet.getCell(`H${16 + i}`);
           tableFrequency.value = Number(row.frequency);
+          tableFrequency.font = { size: 12 };
 
           const tableQuantity = worksheet.getCell(`I${16 + i}`);
           tableQuantity.value = Number(row.quantity);
+          tableQuantity.font = { size: 12 };
 
           const tableUnit = worksheet.getCell(`J${16 + i}`);
           tableUnit.value = row.unit;
+          tableUnit.font = { size: 12 };
 
           const tableUnitCost = worksheet.getCell(`K${16 + i}`);
           tableUnitCost.value = Number(row.unitCost);
+          tableUnitCost.font = { size: 12 };
 
           const tableTotal = worksheet.getCell(`L${16 + i}`);
           tableTotal.value = Number(row.total);
+          tableTotal.font = { size: 12 };
 
           // worksheet.addRow([
           //   `${i + 1}`,
@@ -393,6 +449,89 @@ const FormWithGroups: React.FC = () => {
           0
         );
         totalSum.font = { bold: true, size: 12 };
+
+        //FOOTER
+        worksheet.mergeCells(`A${[rowCount + 2]}:L${[rowCount + 2]}`);
+        // Expense Charged To
+        worksheet.mergeCells(`B${[rowCount + 3]}:C${[rowCount + 3]}`);
+        const chargeExpenseTo = worksheet.getCell(`B${[rowCount + 3]}`);
+        chargeExpenseTo.value = "Charge Expense To";
+        chargeExpenseTo.font = { bold: true };
+
+        const chargeExpTo = worksheet.getColumn("B");
+        chargeExpTo.width = 16;
+
+        worksheet.mergeCells(`D${[rowCount + 3]}:G${[rowCount + 3]}`);
+        const expenseChargedToValue = worksheet.getCell(`D${rowCount + 3}`);
+        expenseChargedToValue.value = newData.data.expenseChargedTo;
+        expenseChargedToValue.border = { bottom: { style: "medium" } };
+
+        // Account Code
+        worksheet.mergeCells(`B${[rowCount + 4]}:C${[rowCount + 4]}`);
+        const accountCode = worksheet.getCell(`B${[rowCount + 4]}`);
+        accountCode.value = "Account Code";
+        accountCode.font = { bold: true };
+
+        worksheet.mergeCells(`D${[rowCount + 4]}:G${[rowCount + 4]}`);
+        const accountCodeValue = worksheet.getCell(`D${rowCount + 4}`);
+        accountCodeValue.value = newData.data.accountCode;
+        accountCodeValue.border = { bottom: { style: "medium" } };
+
+        // Requested By
+        // worksheet.mergeCells(`B${[rowCount + 2]}:C${[rowCount + 2]}`);
+        const requestedBy = worksheet.getCell(`J${[rowCount + 3]}`);
+        requestedBy.value = "Request By";
+        requestedBy.font = { bold: true };
+
+        worksheet.mergeCells(`K${[rowCount + 3]}:L${[rowCount + 3]}`);
+        const requestedByValue = worksheet.getCell(`K${rowCount + 3}`);
+        requestedByValue.value = newData.data.requestedBy;
+        requestedByValue.border = { bottom: { style: "medium" } };
+
+        //Reviewed By
+        const reviewedBy = worksheet.getCell(`J${[rowCount + 4]}`);
+        reviewedBy.value = "Reviewed By";
+        reviewedBy.font = { bold: true };
+
+        worksheet.mergeCells(`K${[rowCount + 4]}:L${[rowCount + 4]}`);
+        const reviewedByValue = worksheet.getCell(`K${rowCount + 4}`);
+        reviewedByValue.value = "Esther Alfred";
+        reviewedByValue.border = { bottom: { style: "medium" } };
+
+        //Approved By
+        const approvedBy = worksheet.getCell(`J${[rowCount + 5]}`);
+        approvedBy.value = "Approved By";
+        approvedBy.font = { bold: true };
+
+        worksheet.mergeCells(`K${[rowCount + 5]}:L${[rowCount + 5]}`);
+        const approvedByValue = worksheet.getCell(`K${rowCount + 5}`);
+        approvedByValue.value = newData.data.approvedBy;
+        approvedByValue.border = { bottom: { style: "medium" } };
+
+        // Comment
+        worksheet.mergeCells(`B${[rowCount + 6]}:C${[rowCount + 6]}`);
+        const comment = worksheet.getCell(`B${[rowCount + 6]}`);
+        comment.value = "COMMENTS:";
+        comment.font = { bold: true };
+        comment.border = {
+          top: { style: "thin" },
+          right: { style: "thin" },
+          bottom: { style: "thin" },
+          left: { style: "thin" },
+        };
+
+        worksheet.mergeCells(`D${[rowCount + 6]}:I${[rowCount + 9]}`);
+        const commentsValue = worksheet.getCell(`D${[rowCount + 6]}`);
+        commentsValue.border = {
+          top: { style: "thin" },
+          right: { style: "thin" },
+          bottom: { style: "thin" },
+          left: { style: "thin" },
+        };
+        commentsValue.alignment = {
+          vertical: "top",
+          horizontal: "left",
+        };
 
         ////////////////////////////////////////
         //DOWNLOAD FILE
@@ -512,7 +651,7 @@ const FormWithGroups: React.FC = () => {
       <Row>
         <FormRow
           label="Activity Description"
-          type="large"
+          type="wide"
           error={errors?.being?.message}
         >
           <Input
@@ -535,10 +674,11 @@ const FormWithGroups: React.FC = () => {
             <h4>ITEM {index + 1}</h4>
 
             <Row>
-              <FormRow label="Description *" type="large">
+              <FormRow label="Description *" type="wide">
                 <Input
                   placeholder=""
                   size="wide"
+                  disabled={group.disabled}
                   value={group.description}
                   required
                   title="This field is required"
@@ -555,12 +695,11 @@ const FormWithGroups: React.FC = () => {
                   placeholder=""
                   type="number"
                   min="0"
-                  max="100"
+                  disabled={group.disabled}
                   required
                   value={group.frequency}
                   onChange={(e: any) => {
                     handleChange(index, "frequency", e.target.value);
-                    // setFrequency(e.target.value);
                   }}
                 />
               </FormRow>
@@ -569,23 +708,20 @@ const FormWithGroups: React.FC = () => {
                   placeholder=""
                   type="number"
                   min="0"
-                  max="100"
+                  disabled={group.disabled}
                   value={group.quantity}
                   onChange={(e: any) => {
                     handleChange(index, "quantity", e.target.value);
-                    // setQuantiy(e.target.value);
                   }}
                 />
               </FormRow>
               <FormRow label="Unit" type="small">
                 <Input
-                  min="0"
-                  max="100"
+                  disabled={group.disabled}
                   value={group.unit}
                   placeholder=""
                   onChange={(e: any) => {
                     handleChange(index, "unit", e.target.value);
-                    // setUnit(e.target.value);
                   }}
                 />
               </FormRow>
@@ -595,11 +731,11 @@ const FormWithGroups: React.FC = () => {
                 <Input
                   type="number"
                   min="0"
+                  disabled={group.disabled}
                   value={group.unitCost}
                   placeholder="123..."
                   onChange={(e: any) => {
                     handleChange(index, "unitCost", e.target.value);
-                    // setUnitCost(e.target.value);
                   }}
                 />
               </FormRow>
@@ -608,6 +744,7 @@ const FormWithGroups: React.FC = () => {
                 <Input
                   placeholder=""
                   type="number"
+                  disabled={group.disabled}
                   value={group.total}
                   onChange={(e: any) =>
                     handleChange(index, "total", e.target.value)
@@ -615,9 +752,21 @@ const FormWithGroups: React.FC = () => {
                 />
               </FormRow>
             </Row>
-            <button type="submit" onClick={() => removeGroup(index)}>
-              Delete Item {index + 1}
-            </button>
+            <div>
+              <ItemDeleteButton
+                type="button"
+                onClick={() => removeGroup(index)}
+              >
+                Delete Item {index + 1}
+              </ItemDeleteButton>
+              <ItemDoneButton
+                isDisabled={group.disabled}
+                type="button"
+                onClick={() => handledEdit(index)}
+              >
+                {group.disabled ? "Edit Item" : "Done"}
+              </ItemDoneButton>
+            </div>
           </StyledPurchaseItem>
         ))}
       </ItemContainer>

@@ -28,6 +28,11 @@ const StyledFormRow = styled.div<StyledFormRowProps>`
     css`
       width: 25%;
     `}
+  ${(props) =>
+    props.type === "wide" &&
+    css`
+      width: 100%;
+    `}
 `;
 
 const Label = styled.label`

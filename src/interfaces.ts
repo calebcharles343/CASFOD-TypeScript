@@ -34,12 +34,12 @@ export interface FormValues2 {
   periodOfActivity: string;
   activityDescription: string;
   expenseChargedTo: string;
-  acountCode: string;
+  accountCode: string;
   requestedBy: string;
   address: string;
   finalDeliveryPoint: string;
   approvedBy: string;
-  discription: string;
+  description: string;
   frequency: string;
   quantity: string;
   unit: string;
@@ -53,7 +53,7 @@ export interface ButtonProps {
 }
 
 export interface StyledFormRowProps {
-  type?: "small" | "medium" | "large";
+  type?: "small" | "medium" | "large" | "wide";
 }
 
 export interface RowProps {
@@ -80,7 +80,7 @@ export interface FormRowProps {
   label: string;
   error: any;
   children: any;
-  type: "small" | "medium" | "large";
+  type: "small" | "medium" | "large" | "wide";
 }
 /*
  error:
@@ -94,3 +94,7 @@ export interface Filter {
   position: string;
   code: string;
 }
+
+// export type StyledInputProps = {
+//   reset: UseFormReset<FormValues>;
+// };

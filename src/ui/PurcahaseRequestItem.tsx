@@ -55,7 +55,7 @@ const RemoveButton = styled(Button)`
 
 interface FormValues {
   groups: {
-    discription: string;
+    description: string;
     frequency: string;
     quantity: string;
     unit: string;
@@ -68,7 +68,7 @@ const DynamicForm: React.FC = ({ register, errors }: any) => {
   const [formValues, setFormValues] = useState<FormValues>({
     groups: [
       {
-        discription: "",
+        description: "",
         frequency: "",
         quantity: "",
         unit: "",
@@ -94,7 +94,7 @@ const DynamicForm: React.FC = ({ register, errors }: any) => {
       groups: [
         ...prevValues.groups,
         {
-          discription: "",
+          description: "",
           frequency: "",
           quantity: "",
           unit: "",
@@ -117,14 +117,14 @@ const DynamicForm: React.FC = ({ register, errors }: any) => {
         <StyledPurchaseItem key={index}>
           <Row>
             <FormRow
-              label="Discription *"
+              label="Description *"
               type="large"
-              error={errors?.discription?.message}
+              error={errors?.description?.message}
             >
               <Textarea
                 placeholder=""
-                id="discription"
-                {...register("discription", {
+                id="description"
+                {...register("description", {
                   required: "This field is required",
                 })}
               />
@@ -151,7 +151,6 @@ const DynamicForm: React.FC = ({ register, errors }: any) => {
               <Input
                 type="number"
                 min="0"
-                max="100"
                 step=".1"
                 // value={wht || ""}
                 placeholder=""
@@ -164,7 +163,7 @@ const DynamicForm: React.FC = ({ register, errors }: any) => {
             </FormRow>
             <FormRow label="Unit" type="small">
               <Input
-                type="number"
+                type="text"
                 min="0"
                 max="100"
                 step=".1"

@@ -1,6 +1,9 @@
 import styled, { css } from "styled-components";
+// import { UseFormReset } from "react-hook-form";
+// import { FormValues } from "../interfaces";
 interface InputProps {
   size?: string;
+  // reset?: UseFormReset<FormValues>;
 }
 
 const Input = styled.input<InputProps>`
@@ -12,7 +15,7 @@ const Input = styled.input<InputProps>`
     props.size === "wide" &&
     css`
       width: 100%;
-    `}
+    `};
 `;
 
 export default Input;
