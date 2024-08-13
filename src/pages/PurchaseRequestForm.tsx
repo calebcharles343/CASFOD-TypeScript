@@ -43,7 +43,7 @@ const ItemDeleteButton = styled.button`
   }
 `;
 
-const ItemDoneButton = styled.button<{ isDisabled: boolean }>`
+const ItemDoneButton = styled.button`
   text-align: center;
   color: #212529;
   margin-right: 2%;
@@ -57,7 +57,6 @@ const ItemDoneButton = styled.button<{ isDisabled: boolean }>`
     background-color: #748ffc;
   }
 
-  /* color: ${(props) => (props.isDisabled ? "#fff" : "#212529")}; */
   color: #fff;
 `;
 
@@ -757,7 +756,7 @@ const FormWithGroups: React.FC = () => {
                 Delete Item {index + 1}
               </ItemDeleteButton>
               <ItemDoneButton
-                isDisabled={group.disabled}
+                // isDisabled={group.disabled}
                 type="button"
                 onClick={() => handledEdit(index)}
               >
