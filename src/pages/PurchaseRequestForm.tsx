@@ -777,7 +777,7 @@ const FormWithGroups: React.FC = () => {
         Add Item
         <FaPlus />
       </Button>
-      <span>{itemGroup.length} Added</span>
+      <span>{itemGroup.length} Item Added</span>
 
       <Row>
         <FormRow
