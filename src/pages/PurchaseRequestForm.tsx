@@ -24,7 +24,7 @@ const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-height: 400px;
+  max-height: 450px;
   overflow-y: scroll;
 `;
 
@@ -780,7 +780,7 @@ const FormWithGroups: React.FC = () => {
       <span>
         {itemGroup.length > 1
           ? itemGroup.length + " Items "
-          : itemGroup.length + " item "}
+          : itemGroup.length + " Item "}
         Added
       </span>
 
