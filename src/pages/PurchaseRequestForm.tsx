@@ -278,7 +278,7 @@ const FormWithGroups: React.FC = () => {
         requisitionedBy.font = { bold: true, size: 12 };
 
         const requisitionedByValue = worksheet.getCell("I10");
-        requisitionedByValue.value = newData.data.requiredBy;
+        requisitionedByValue.value = newData.data.requestedBy;
         requisitionedByValue.font = { size: 12 };
 
         // FINAL DELIVERY POINT
@@ -474,7 +474,7 @@ const FormWithGroups: React.FC = () => {
 
         worksheet.mergeCells(`K${[rowCount + 3]}:L${[rowCount + 3]}`);
         const requestedByValue = worksheet.getCell(`K${rowCount + 3}`);
-        requestedByValue.value = newData.data.requestedBy;
+        requestedByValue.value = newData.data.reviewedBy;
         requestedByValue.border = { bottom: { style: "medium" } };
 
         //Reviewed By
@@ -600,12 +600,12 @@ const FormWithGroups: React.FC = () => {
             {...register("suggestedSupplier")}
           />
         </FormRow>
-        <FormRow label="Required by *">
+        <FormRow label="Requested By *">
           <Input
             placeholder=""
-            id="requiredBy"
+            id="requestedBy"
             required
-            {...register("requiredBy")}
+            {...register("requestedBy")}
           />
         </FormRow>
       </Row>
@@ -814,13 +814,13 @@ const FormWithGroups: React.FC = () => {
       </Row>
 
       <Row>
-        <FormRow label="Requested By *" type="medium">
+        <FormRow label="Reviewed By *" type="medium">
           <Input
             type="text"
             placeholder=""
-            id="requestedBy"
+            id="reviewedBy"
             required
-            {...register("requestedBy")}
+            {...register("reviewedBy")}
           />
         </FormRow>
       </Row>

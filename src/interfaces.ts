@@ -29,13 +29,13 @@ export interface FormValues2 {
   date: string;
   department: string;
   suggestedSupplier: string;
-  requiredBy: string;
+  requestedBy: string;
   city: string;
   periodOfActivity: string;
   activityDescription: string;
   expenseChargedTo: string;
   accountCode: string;
-  requestedBy: string;
+  reviewedBy: string;
   address: string;
   finalDeliveryPoint: string;
   approvedBy: string;
